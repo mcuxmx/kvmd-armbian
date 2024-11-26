@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/srepac/kvmd-armbian
+# https://ghp.ci/https://github.com/srepac/kvmd-armbian
 #
 # modified by xe5700            2021-11-04      xe5700@outlook.com
 # modified by NewbieOrange      2021-11-04
@@ -487,7 +487,7 @@ build-ustreamer() {
 
   # Download ustreamer source and build it
   cd /tmp
-  git clone --depth=1 https://github.com/pikvm/ustreamer
+  git clone --depth=1 https://ghp.ci/https://github.com/pikvm/ustreamer
   cd ustreamer/
   make WITH_GPIO=1 WITH_SYSTEMD=1 WITH_JANUS=1 WITH_V4P=1 -j
   make install
@@ -526,7 +526,7 @@ install-dependencies() {
     # Build and install ttyd
     cd /tmp
     apt-get install -y build-essential cmake git libjson-c-dev libwebsockets-dev
-    git clone https://github.com/tsl0922/ttyd.git
+    git clone https://ghp.ci/https://github.com/tsl0922/ttyd.git
     cd ttyd && mkdir build && cd build
     cmake ..
     make -j && make install
@@ -538,7 +538,7 @@ install-dependencies() {
     #if [ $arch = arm64 ]; then
     #  arch='aarch64'
     #fi
-    #wget --no-check-certificate "https://github.com/tsl0922/ttyd/releases/download/$latest/ttyd.$arch" -O /usr/bin/ttyd
+    #wget --no-check-certificate "https://ghp.ci/https://github.com/tsl0922/ttyd/releases/download/$latest/ttyd.$arch" -O /usr/bin/ttyd
     chmod +x /usr/bin/ttyd
   fi
   /usr/bin/ttyd -v | tee -a $LOGFILE
@@ -546,7 +546,7 @@ install-dependencies() {
   if [ ! -e /usr/local/bin/gpio ]; then
     printf "\n\n-> Building wiringpi from source\n\n" | tee -a $LOGFILE
     cd /tmp; rm -rf WiringPi
-    git clone https://github.com/WiringPi/WiringPi.git
+    git clone https://ghp.ci/https://github.com/WiringPi/WiringPi.git
     cd WiringPi
     ./build
   else
@@ -935,7 +935,7 @@ update-logo() {
   sed -i -e 's|target="_blank"><img class="svg-gray"|target="_blank"><img class="svg-color"|g' /usr/share/kvmd/web/kvm/index.html
 
   ### download opikvm-logo.svg and then overwrite logo.svg
-  wget --no-check-certificate -O /usr/share/kvmd/web/share/svg/opikvm-logo.svg https://github.com/srepac/kvmd-armbian/raw/master/opikvm-logo.svg > /dev/null 2> /dev/null
+  wget --no-check-certificate -O /usr/share/kvmd/web/share/svg/opikvm-logo.svg https://ghp.ci/https://github.com/srepac/kvmd-armbian/raw/master/opikvm-logo.svg > /dev/null 2> /dev/null
   cd /usr/share/kvmd/web/share/svg
   cp logo.svg logo.svg.old
   cp opikvm-logo.svg logo.svg
@@ -949,7 +949,7 @@ update-logo() {
 }
 
 function fix-hk4401() {
-  # https://github.com/ThomasVon2021/blikvm/issues/168
+  # https://ghp.ci/https://github.com/ThomasVon2021/blikvm/issues/168
 
   # Download kvmd-4.2 package from kvmnerds.com to /tmp and extract only the xh_hk4401.py script
   cd /tmp
