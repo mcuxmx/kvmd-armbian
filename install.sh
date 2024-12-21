@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://ghp.ci/https://github.com/srepac/kvmd-armbian
+# https://ghgo.xyz/https://github.com/srepac/kvmd-armbian
 #
 # modified by xe5700            2021-11-04      xe5700@outlook.com
 # modified by NewbieOrange      2021-11-04
@@ -21,7 +21,7 @@
 VER=3.4
 set +x
 PIKVMREPO="https://files.pikvm.org/repos/arch/rpi4"
-KVMDFILE="kvmd-3.291-1-any.pkg.tar.xz"
+KVMDFILE="kvmd-4.23-1-any.pkg.tar.xz"
 KVMDCACHE="/var/cache/kvmd"; mkdir -p $KVMDCACHE
 PKGINFO="${KVMDCACHE}/packages.txt"
 APP_PATH=$(readlink -f $(dirname $0))
@@ -407,8 +407,8 @@ install-kvmd-pkgs() {
 # uncompress platform package first
   i=$( ls ${KVMDCACHE}/${platform}*.tar.xz )  ### install the most up to date kvmd-platform package
 
-  # change the log entry to show 3.291 platform installed as we'll be forcing kvmd-3.291 instead of latest/greatest kvmd
-  _platformver=$( echo $i | sed -e 's/3\.29[2-9]*/3.291/g' -e 's/3\.3[0-9]*/3.291/g' -e 's/3.2911/3.291/g' -e 's/4\.[0-9].*-/3.291-/g' )
+  # change the log entry to show 4.23 platform installed as we'll be forcing kvmd-4.23 instead of latest/greatest kvmd
+  _platformver=$( echo $i | sed -e 's/3\.29[2-9]*/4.23/g' -e 's/3\.3[0-9]*/4.23/g' -e 's/4.231/4.23/g' -e 's/4\.[0-9].*-/4.23-/g' )
   echo "-> Extracting package $_platformver into /" | tee -a $INSTLOG
   tar xfJ $i
 
@@ -416,9 +416,9 @@ install-kvmd-pkgs() {
   for i in $( ls ${KVMDCACHE}/*.tar.xz | egrep 'kvmd-[0-9]|webterm' )
   do
     case $i in
-      *kvmd-3.29[2-9]*|*kvmd-3.[3-9]*|*kvmd-[45].[1-9]*)  # if latest/greatest is 3.292 and higher, then force 3.291 install
-        echo "*** Force install kvmd 3.291 ***" | tee -a $LOGFILE
-        # copy kvmd-3.291 package
+      *kvmd-3.29[2-9]*|*kvmd-3.[3-9]*|*kvmd-[45].[1-9]*)  # if latest/greatest is 3.292 and higher, then force 4.23 install
+        echo "*** Force install kvmd 4.23 ***" | tee -a $LOGFILE
+        # copy kvmd-4.23 package
         cp $CWD/$KVMDFILE $KVMDCACHE/
         i=$KVMDCACHE/$KVMDFILE
         ;;
@@ -487,7 +487,7 @@ build-ustreamer() {
 
   # Download ustreamer source and build it
   cd /tmp
-  git clone --depth=1 https://ghp.ci/https://github.com/pikvm/ustreamer
+  git clone --depth=1 https://ghgo.xyz/https://github.com/pikvm/ustreamer
   cd ustreamer/
   make WITH_GPIO=1 WITH_SYSTEMD=1 WITH_JANUS=1 WITH_V4P=1 -j
   make install
@@ -526,7 +526,7 @@ install-dependencies() {
     # Build and install ttyd
     cd /tmp
     apt-get install -y build-essential cmake git libjson-c-dev libwebsockets-dev
-    git clone https://ghp.ci/https://github.com/tsl0922/ttyd.git
+    git clone https://ghgo.xyz/https://github.com/tsl0922/ttyd.git
     cd ttyd && mkdir build && cd build
     cmake ..
     make -j && make install
@@ -538,7 +538,7 @@ install-dependencies() {
     #if [ $arch = arm64 ]; then
     #  arch='aarch64'
     #fi
-    #wget --no-check-certificate "https://ghp.ci/https://github.com/tsl0922/ttyd/releases/download/$latest/ttyd.$arch" -O /usr/bin/ttyd
+    #wget --no-check-certificate "https://ghgo.xyz/https://github.com/tsl0922/ttyd/releases/download/$latest/ttyd.$arch" -O /usr/bin/ttyd
     chmod +x /usr/bin/ttyd
   fi
   /usr/bin/ttyd -v | tee -a $LOGFILE
@@ -546,7 +546,7 @@ install-dependencies() {
   if [ ! -e /usr/local/bin/gpio ]; then
     printf "\n\n-> Building wiringpi from source\n\n" | tee -a $LOGFILE
     cd /tmp; rm -rf WiringPi
-    git clone https://ghp.ci/https://github.com/WiringPi/WiringPi.git
+    git clone https://ghgo.xyz/https://github.com/WiringPi/WiringPi.git
     cd WiringPi
     ./build
   else
@@ -935,7 +935,7 @@ update-logo() {
   sed -i -e 's|target="_blank"><img class="svg-gray"|target="_blank"><img class="svg-color"|g' /usr/share/kvmd/web/kvm/index.html
 
   ### download opikvm-logo.svg and then overwrite logo.svg
-  wget --no-check-certificate -O /usr/share/kvmd/web/share/svg/opikvm-logo.svg https://ghp.ci/https://github.com/srepac/kvmd-armbian/raw/master/opikvm-logo.svg > /dev/null 2> /dev/null
+  wget --no-check-certificate -O /usr/share/kvmd/web/share/svg/opikvm-logo.svg https://ghgo.xyz/https://github.com/srepac/kvmd-armbian/raw/master/opikvm-logo.svg > /dev/null 2> /dev/null
   cd /usr/share/kvmd/web/share/svg
   cp logo.svg logo.svg.old
   cp opikvm-logo.svg logo.svg
@@ -949,7 +949,7 @@ update-logo() {
 }
 
 function fix-hk4401() {
-  # https://ghp.ci/https://github.com/ThomasVon2021/blikvm/issues/168
+  # https://ghgo.xyz/https://github.com/ThomasVon2021/blikvm/issues/168
 
   # Download kvmd-4.2 package from kvmnerds.com to /tmp and extract only the xh_hk4401.py script
   cd /tmp
@@ -961,7 +961,7 @@ function fix-hk4401() {
   diff xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/
 
   # make a backup of current xh_hk4401.py script
-  cp /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py.3.291
+  cp /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py.4.23
 
   # replace it with the kvmd 4.2 version of script which allows use of protocol: 2
   cp xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/
@@ -1053,7 +1053,7 @@ else
   case $PYTHONVER in
     3.10*|3.[987]*)
       pip3 install async-lru 2> /dev/null
-      ### Fix for kvmd 3.291 -- only applies to python 3.10 ###
+      ### Fix for kvmd 4.23 -- only applies to python 3.10 ###
       sed -i -e 's|gpiod.EdgeEvent|gpiod.LineEvent|g' /usr/lib/python3/dist-packages/kvmd/aiogp.py
       sed -i -e 's|gpiod.line,|gpiod.Line,|g'         /usr/lib/python3/dist-packages/kvmd/aiogp.py
       ;;
