@@ -21,7 +21,7 @@
 VER=3.4
 set +x
 PIKVMREPO="https://files.pikvm.org/repos/arch/rpi4"
-KVMDFILE="kvmd-4.23-1-any.pkg.tar.xz"
+KVMDFILE="kvmd-3.291-1-any.pkg.tar.xz"
 KVMDCACHE="/var/cache/kvmd"; mkdir -p $KVMDCACHE
 PKGINFO="${KVMDCACHE}/packages.txt"
 APP_PATH=$(readlink -f $(dirname $0))
@@ -407,8 +407,8 @@ install-kvmd-pkgs() {
 # uncompress platform package first
   i=$( ls ${KVMDCACHE}/${platform}*.tar.xz )  ### install the most up to date kvmd-platform package
 
-  # change the log entry to show 4.23 platform installed as we'll be forcing kvmd-4.23 instead of latest/greatest kvmd
-  _platformver=$( echo $i | sed -e 's/3\.29[2-9]*/4.23/g' -e 's/3\.3[0-9]*/4.23/g' -e 's/4.231/4.23/g' -e 's/4\.[0-9].*-/4.23-/g' )
+  # change the log entry to show 3.291 platform installed as we'll be forcing kvmd-3.291 instead of latest/greatest kvmd
+  _platformver=$( echo $i | sed -e 's/3\.29[2-9]*/3.291/g' -e 's/3\.3[0-9]*/3.291/g' -e 's/3.2911/3.291/g' -e 's/4\.[0-9].*-/3.291-/g' )
   echo "-> Extracting package $_platformver into /" | tee -a $INSTLOG
   tar xfJ $i
 
@@ -416,9 +416,9 @@ install-kvmd-pkgs() {
   for i in $( ls ${KVMDCACHE}/*.tar.xz | egrep 'kvmd-[0-9]|webterm' )
   do
     case $i in
-      *kvmd-3.29[2-9]*|*kvmd-3.[3-9]*|*kvmd-[45].[1-9]*)  # if latest/greatest is 3.292 and higher, then force 4.23 install
-        echo "*** Force install kvmd 4.23 ***" | tee -a $LOGFILE
-        # copy kvmd-4.23 package
+      *kvmd-3.29[2-9]*|*kvmd-3.[3-9]*|*kvmd-[45].[1-9]*)  # if latest/greatest is 3.292 and higher, then force 3.291 install
+        echo "*** Force install kvmd 3.291 ***" | tee -a $LOGFILE
+        # copy kvmd-3.291 package
         cp $CWD/$KVMDFILE $KVMDCACHE/
         i=$KVMDCACHE/$KVMDFILE
         ;;
@@ -961,7 +961,7 @@ function fix-hk4401() {
   diff xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/
 
   # make a backup of current xh_hk4401.py script
-  cp /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py.4.23
+  cp /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/xh_hk4401.py.3.291
 
   # replace it with the kvmd 4.2 version of script which allows use of protocol: 2
   cp xh_hk4401.py /usr/lib/python3/dist-packages/kvmd/plugins/ugpio/
@@ -1053,7 +1053,7 @@ else
   case $PYTHONVER in
     3.10*|3.[987]*)
       pip3 install async-lru 2> /dev/null
-      ### Fix for kvmd 4.23 -- only applies to python 3.10 ###
+      ### Fix for kvmd 3.291 -- only applies to python 3.10 ###
       sed -i -e 's|gpiod.EdgeEvent|gpiod.LineEvent|g' /usr/lib/python3/dist-packages/kvmd/aiogp.py
       sed -i -e 's|gpiod.line,|gpiod.Line,|g'         /usr/lib/python3/dist-packages/kvmd/aiogp.py
       ;;
